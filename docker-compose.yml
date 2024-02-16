@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  app:
+    container_name: nestjs_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - WEATHER_KEY=${WEATHER_KEY}
+      - DATABASE_HOST=db
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=secret
+      - DATABASE_NAME=weather_db
+    depends_on:
+      - db
+  db:
+    container_name: mysql_db
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: weather_db
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
